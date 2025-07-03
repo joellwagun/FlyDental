@@ -1,0 +1,9 @@
+# backend/app/routes/auth.py
+
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/test")
+def test_auth():
+    return {"message": "Auth route working"}

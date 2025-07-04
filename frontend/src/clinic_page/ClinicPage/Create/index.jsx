@@ -1,10 +1,19 @@
 
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Input, Button, Form, message, InputNumber } from 'antd'
-import { addClinic } from '@/services/clinic'
+import { addClinic ,updateClinic} from '@/services/clinic'
 
-export default function AddClinic({ onClose, onSuccess }) {
+export default function AddClinic({ onClose, onSuccess, initialValues }) {
   const [form] = Form.useForm()
+
+  useEffect(() => {
+    if (initialValues) {
+      form.setFieldsValue({
+        ...initialValues,
+        services: initialValues.services?.join(', '),
+      })
+    }
+  }, [initialValues, form])
 
   const handleFinish = async (values) => {
     // Convert services string into array
@@ -21,16 +30,20 @@ export default function AddClinic({ onClose, onSuccess }) {
       image: values.image || null,
     }
 
-    try {
-      const response = await addClinic(clinicData)
-      message.success('Clinic added successfully!')
+      try {
+      if (initialValues?.id) {
+        await updateClinic(initialValues.id, clinicData)
+        message.success('Clinic updated successfully!')
+      } else {
+        await addClinic(clinicData)
+        message.success('Clinic added successfully!')
+      }
       form.resetFields()
       onClose()
-      // Optional callback to refresh list
-      onSuccess && onSuccess(response)
+      onSuccess && onSuccess()
     } catch (err) {
       console.error(err)
-      message.error(err.response?.data?.detail || 'Failed to add clinic.')
+      message.error(err.response?.data?.detail || 'Operation failed.')
     }
   }
 

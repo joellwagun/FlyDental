@@ -15,7 +15,7 @@ app = FastAPI(
 # Must be here, BEFORE you include any routers!
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # your React dev server
+    allow_origins=["*"],  # your React dev server
     allow_credentials=False,                  # wildcard origins + creds = False
     allow_methods=["*"],
     allow_headers=["*"],

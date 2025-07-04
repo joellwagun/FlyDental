@@ -13,7 +13,9 @@ import { Modal, Button } from "antd";
 const { confirm } = Modal;
 
 const navItems = [
-  { to: "clinic-dashboard", label: "Clinic" }, // or "" if it's inside a layout route
+  { to: "clinic-dashboard", label: "Clinic" }, 
+  
+  {to: "/clinic-dashboard/appointment-booked", label: "Appointment"}
 ];
 
 

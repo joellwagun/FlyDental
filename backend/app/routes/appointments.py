@@ -1,51 +1,63 @@
-# backend/app/routes/appointments.py
-
 from fastapi import APIRouter, HTTPException, Depends
-from sqlmodel import Session, select
-from app.models import Appointment
-from app.schemas import AppointmentCreate, AppointmentRead, AppointmentUpdate
+from sqlalchemy.orm import Session
+from typing import List
+from app import models, schemas
 from app.database import get_db
 
+router = APIRouter(
+    tags=["Appointments"]
+)
 
-router = APIRouter()
+# Create Appointment
+@router.post("", response_model=schemas.AppointmentRead)
+@router.post("/", response_model=schemas.AppointmentRead)
+def create_appointment(
+    appointment: schemas.AppointmentCreate,
+    db: Session = Depends(get_db)
+):
+    db_appointment = models.Appointment(**appointment.dict())
+    db.add(db_appointment)
+    db.commit()
+    db.refresh(db_appointment)
+    return db_appointment
 
-@router.post("/", response_model=AppointmentRead)
-def create_appointment(data: AppointmentCreate, session: Session = Depends(get_db)):
-    appointment = Appointment(**data.dict())
-    session.add(appointment)
-    session.commit()
-    session.refresh(appointment)
+# Get All Appointments
+@router.get("/", response_model=List[schemas.AppointmentRead])
+def get_all_appointments(db: Session = Depends(get_db)):
+    return db.query(models.Appointment).all()
+
+# Get Single Appointment by ID
+@router.get("/{appointment_id}", response_model=schemas.AppointmentRead)
+def get_appointment(appointment_id: int, db: Session = Depends(get_db)):
+    appointment = db.query(models.Appointment).get(appointment_id)
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
     return appointment
 
-@router.get("/", response_model=list[AppointmentRead])
-def get_appointments(session: Session = Depends(get_db)):
-    return session.exec(select(Appointment)).all()
-
-@router.get("/{appointment_id}", response_model=AppointmentRead)
-def get_appointment(appointment_id: int, session: Session = Depends(get_db)):
-    appt = session.get(Appointment, appointment_id)
-    if not appt:
+# Update Appointment
+@router.put("/{appointment_id}", response_model=schemas.AppointmentRead)
+def update_appointment(
+    appointment_id: int,
+    updated: schemas.AppointmentUpdate,
+    db: Session = Depends(get_db)
+):
+    appointment = db.query(models.Appointment).get(appointment_id)
+    if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
-    return appt
 
-@router.put("/{appointment_id}", response_model=AppointmentRead)
-def update_appointment(appointment_id: int, update: AppointmentUpdate, session: Session = Depends(get_db)):
-    appt = session.get(Appointment, appointment_id)
-    if not appt:
-        raise HTTPException(status_code=404, detail="Appointment not found")
-    update_data = update.dict(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(appt, key, value)
-    session.add(appt)
-    session.commit()
-    session.refresh(appt)
-    return appt
+    for key, value in updated.dict(exclude_unset=True).items():
+        setattr(appointment, key, value)
+    db.commit()
+    db.refresh(appointment)
+    return appointment
 
+# Delete Appointment
 @router.delete("/{appointment_id}")
-def delete_appointment(appointment_id: int, session: Session = Depends(get_db)):
-    appt = session.get(Appointment, appointment_id)
-    if not appt:
+def delete_appointment(appointment_id: int, db: Session = Depends(get_db)):
+    appointment = db.query(models.Appointment).get(appointment_id)
+    if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
-    session.delete(appt)
-    session.commit()
-    return {"message": "Appointment deleted"}
+
+    db.delete(appointment)
+    db.commit()
+    return {"detail": f"Appointment {appointment_id} deleted"}

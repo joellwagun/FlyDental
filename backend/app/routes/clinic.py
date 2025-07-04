@@ -16,11 +16,16 @@ def create_clinic(
     clinic: schemas.ClinicCreate,
     db: Session = Depends(get_db)
 ):
-    db_clinic = models.Clinic(**clinic.dict())
+    # Convert services from list to comma-separated string
+    clinic_data = clinic.dict()
+    clinic_data["services"] = ",".join(clinic_data["services"])
+
+    db_clinic = models.Clinic(**clinic_data)
     db.add(db_clinic)
     db.commit()
     db.refresh(db_clinic)
     return db_clinic
+
 
 
 @router.get("/", response_model=List[schemas.ClinicRead])
@@ -46,11 +51,16 @@ def update_clinic(
     if not clinic:
         raise HTTPException(status_code=404, detail="Clinic not found")
 
-    for k, v in updated.dict().items():
+    updated_data = updated.dict()
+    updated_data["services"] = ",".join(updated_data["services"])
+
+    for k, v in updated_data.items():
         setattr(clinic, k, v)
+
     db.commit()
     db.refresh(clinic)
     return clinic
+
 
 
 @router.delete("/{clinic_id}")

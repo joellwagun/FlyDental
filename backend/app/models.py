@@ -11,13 +11,19 @@ class User(SQLModel, table=True):
     hashed_password: str
     role: str = "user"
 
-# New model
+
+
 class Appointment(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     patient_name: str
+    patient_gender: Optional[str] = None
+    patient_age: Optional[int] = None
+    email: Optional[str] = None
+    contact_number: Optional[str] = None
     clinic_name: str
     appointment_date: datetime
-    status: str = "pending"  # pending / confirmed / cancelled
+    status: str = "pending"
+
 
 
 class Clinic(SQLModel, table=True):

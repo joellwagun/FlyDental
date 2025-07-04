@@ -6,7 +6,7 @@ const ClinicCard = ({ clinic }) => {
     const navigate = useNavigate();
 
     const handleBookNow = () => {
-        navigate(`/booking/${clinic.id}`, { state: { clinic } });
+     navigate(`/booking/${clinic.id}`, { state: { clinic } });
     };
 
     const renderStars = (rating) => {

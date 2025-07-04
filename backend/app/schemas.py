@@ -6,21 +6,37 @@ from typing import List, Optional
 
 class AppointmentCreate(BaseModel):
     patient_name: str
+    patient_gender: str
+    patient_age: int
+    email: str
+    contact_number: str
     clinic_name: str
     appointment_date: datetime
+
 
 class AppointmentRead(BaseModel):
     id: int
     patient_name: str
+    patient_gender: Optional[str] = None      # ← make Optional
+    patient_age: Optional[int] = None         # ← make Optional
+    email: Optional[str] = None               # ← make Optional
+    contact_number: Optional[str] = None 
     clinic_name: str
     appointment_date: datetime
     status: str
 
+
 class AppointmentUpdate(BaseModel):
-    patient_name: str | None = None
-    clinic_name: str | None = None
-    appointment_date: datetime | None = None
-    status: str | None = None
+    patient_name: Optional[str] = None
+    patient_gender: Optional[str] = None
+    patient_age: Optional[int] = None
+    email: Optional[str] = None
+    contact_number: Optional[str] = None
+    clinic_name: Optional[str] = None
+    appointment_date: Optional[datetime] = None
+    status: Optional[str] = None
+
+
 
 # ----------------- CLINIC -----------------
 

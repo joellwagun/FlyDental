@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import UserProfile from "./user/pages/UserProfile";
 import ClinicLayout from "./clinic_page/layout";
 import ClinicList from "./clinic_page/ClinicPage/List";
+import AppointmentBookedList from "./clinic_page/Appointment_booked/List";
 
 const App = () => {
   return (
@@ -20,13 +21,12 @@ const App = () => {
         <Route path="/user-dashboard" element={<UserProfile />} />
         
 
-         <Route path="clinic-dashboard" element={<ClinicLayout />}>
-  <Route index element={<ClinicList />} />
-  {/* Add more nested routes here if needed */}
-
-
-       
-        </Route>
+        <Route path="/clinic-dashboard" element={<ClinicLayout />}>
+        {/* default: list clinics for admin */}
+        <Route index element={<ClinicList />} />
+        {/* view booked appointments */}
+        <Route path="appointment-booked" element={<AppointmentBookedList />} />
+      </Route>
       </Routes>
     </Router>
   );

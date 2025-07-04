@@ -109,7 +109,7 @@ if (isNaN(appointmentDate.getTime())) {
     email: patientEmail,
     contact_number: contactNumber,
     clinic_name: appointmentDetails.clinicName,
-      appointment_date: appointmentDate.toISOString(),
+     appointment_date: appointmentDate.toLocaleString('sv-SE'),
     };
 
     try {

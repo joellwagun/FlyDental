@@ -10,6 +10,7 @@ class User(SQLModel, table=True):
     email: str
     hashed_password: str
     role: str = "user"
+    clinic_id: Optional[int] = Field(default=None, foreign_key="clinic.id")
 
 
 

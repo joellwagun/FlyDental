@@ -1,7 +1,5 @@
-# backend/app/main.py
-
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware        # ← make sure this import is present
+from fastapi.middleware.cors import CORSMiddleware
 from app.routes import auth, appointments, admin, clinic
 from app.database import init_db
 
@@ -11,16 +9,14 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# ─── CORS ────────────────────────────────────────────────────────────────
-# Must be here, BEFORE you include any routers!
+# Add CORS middleware BEFORE including any routers
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # your React dev server
-    allow_credentials=False,                  # wildcard origins + creds = False
+    allow_origins=["http://localhost:5173"],  # React dev server origin
+    allow_credentials=True,                    # Allow sending cookies, auth headers
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# ──────────────────────────────────────────────────────────────────────────
 
 @app.on_event("startup")
 def on_startup():
@@ -34,4 +30,4 @@ def root():
 app.include_router(auth.router,        prefix="/auth",        tags=["Auth"])
 app.include_router(appointments.router,prefix="/appointments", tags=["Appointments"])
 app.include_router(admin.router,       prefix="/admin",       tags=["Admin"])
-app.include_router(clinic.router,      prefix="/clinic",     tags=["Clinic"])
+app.include_router(clinic.router,      prefix="/clinic",      tags=["Clinic"])

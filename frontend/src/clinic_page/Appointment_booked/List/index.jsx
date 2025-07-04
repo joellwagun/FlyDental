@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllAppointments } from '@/services/appointment';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 
 export default function AppointmentBookedList() {
   const [appointments, setAppointments] = useState([]);
@@ -13,11 +13,12 @@ export default function AppointmentBookedList() {
         const data = await getAllAppointments();
         setAppointments(data);
       } catch (err) {
-        console.error(err);
+        console.error('Failed to fetch appointments:', err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchAppointments();
   }, []);
 
@@ -27,8 +28,35 @@ export default function AppointmentBookedList() {
     { title: 'Gender', dataIndex: 'patient_gender', key: 'patient_gender' },
     { title: 'Age', dataIndex: 'patient_age', key: 'patient_age' },
     { title: 'Clinic', dataIndex: 'clinic_name', key: 'clinic_name' },
-    { title: 'Date', dataIndex: 'appointment_date', key: 'appointment_date', render: d => new Date(d).toLocaleString() },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    {
+      title: 'Date & Time',
+      key: 'datetime',
+      render: (_, record) => {
+        const date = new Date(record.appointment_date);
+        const localDate = date.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        });
+        const localTime = date.toLocaleTimeString(undefined, {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+        return `${localDate} at ${localTime}`;
+      },
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        let color = 'gray';
+        if (status === 'confirmed') color = 'green';
+        else if (status === 'pending') color = 'orange';
+        else if (status === 'cancelled') color = 'red';
+        return <Tag color={color}>{status || 'N/A'}</Tag>;
+      },
+    },
   ];
 
   return (
@@ -40,6 +68,7 @@ export default function AppointmentBookedList() {
         rowKey="id"
         loading={loading}
         pagination={{ pageSize: 8 }}
+        bordered
       />
     </div>
   );

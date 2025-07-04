@@ -16,17 +16,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/clinics" element={<ClinicPage />} />
-        <Route path="/booking/:id" element={<BookingPage />} /> 
+        <Route path="/booking/:id" element={<BookingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/user-dashboard" element={<UserProfile />} />
         
-
+        {/* Clinic dashboard nested routes */}
         <Route path="/clinic-dashboard" element={<ClinicLayout />}>
-        {/* default: list clinics for admin */}
-        <Route index element={<ClinicList />} />
-        {/* view booked appointments */}
-        <Route path="appointment-booked" element={<AppointmentBookedList />} />
-      </Route>
+          <Route index element={<ClinicList />} />
+          <Route path="appointment-booked" element={<AppointmentBookedList />} />
+        </Route>
       </Routes>
     </Router>
   );

@@ -29,4 +29,3 @@ def get_db():
 # Function to create all tables (called once on startup)
 def init_db():
     SQLModel.metadata.create_all(engine)
-

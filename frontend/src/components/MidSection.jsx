@@ -1,12 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import HomeDental from "../assets/HomeDental.jpg";
 
 function MidSection() {
+  const navigate = useNavigate(); // 👈 added for navigation
+
   return (
     <>
+      {/* Top Section */}
       <div className="flex justify-center items-center gap-4 mt-10 bg-blue-100 p-6 rounded-lg">
         <div className="flex flex-col md:flex-row items-center gap-6">
-          {/* Image and text now inside same parent */}
           <img
             src={HomeDental}
             alt="HomeDental"
@@ -24,13 +27,14 @@ function MidSection() {
 
             <div className="flex justify-center md:justify-start gap-5 mt-6">
               <button
-                type="submit"
+                onClick={() => navigate("/clinics")} // 👈 Navigate to /clinics
                 className="rounded-md bg-indigo-600 px-4 py-2 text-white text-lg font-semibold hover:bg-indigo-500"
               >
                 Book Now
               </button>
               <button
-                type="submit"
+                onClick={() => navigate("/about")} // 👈 Navigate to /about
+                type="button"
                 className="rounded-md bg-indigo-600 px-4 py-2 text-white text-lg font-semibold hover:bg-indigo-500"
               >
                 Learn More
@@ -40,24 +44,24 @@ function MidSection() {
         </div>
       </div>
 
+      {/* Benefits Section */}
       <div className="container mx-auto px-4 py-8 bg-indigo-100 mt-5 rounded-md">
-        {/* Additional content can go here if needed */}
         <h1 className="font-bold text-2xl text-center mt-5">Key benefits</h1>
-        <div className="flex flex-wrap  items-center mt-5 gap-4 justify-evenly">
-          <div className="bg-indigo-300 shadow-md rounded-lg p-6 block items-center w-80 h-35 ">
+        <div className="flex flex-wrap items-center mt-5 gap-4 justify-evenly">
+          <div className="bg-indigo-300 shadow-md rounded-lg p-6 w-80 h-35 ">
             <h3 className="font-semibold mt-2">Save Money</h3>
             <p className="text-sm">
               Avoid expensive emergency dental treatments abroad with preventive
               care.
             </p>
           </div>
-          <div className="bg-indigo-300 shadow-md rounded-lg p-6 block items-center w-80 h-35">
+          <div className="bg-indigo-300 shadow-md rounded-lg p-6 w-80 h-35">
             <h3 className="font-semibold mt-2">Experts Clinic</h3>
             <p className="text-sm">
               Access our network of verified dental professionals across Nepal.
             </p>
           </div>
-          <div className="bg-indigo-300 shadow-md rounded-lg p-6 block items-center w-80 h-35">
+          <div className="bg-indigo-300 shadow-md rounded-lg p-6 w-80 h-35">
             <h3 className="font-semibold mt-2">E-Prescriptions</h3>
             <p className="text-sm">
               Get digital Prescriptions you can access anywhere during your
@@ -67,44 +71,50 @@ function MidSection() {
         </div>
       </div>
 
-      <div className="mt-10 bg-indigo-500 w-100% h-40 text-center mx-auto p-6 rounded-lg text-white flex flex-col ">
+      {/* CTA Section */}
+      <div className="mt-10 bg-indigo-500 w-full h-40 text-center mx-auto p-6 rounded-lg text-white flex flex-col ">
         <h2 className="font-semibold mt-2">Book your dental checkup today!</h2>
         <p className="text-sm">
-          join thousands of Nepelese students and professionals who travel with
+          Join thousands of Nepalese students and professionals who travel with
           confidence.
         </p>
         <div className="flex flex-wrap justify-center mt-4.5 ">
           <button
+            onClick={() => navigate("/clinics")} // 👈 Navigate to /clinics
             className=" bg-purple-500 rounded-md hover:bg-purple-600 text-white font-semibold px-4 py-2"
             type="submit"
           >
-            Get Started !
+            Get Started!
           </button>
         </div>
       </div>
-      <div className="container mx-auto px-4 py-8 bg-indigo-100 mt-5 rounded-md">
-        {/* Additional content can go here if needed */}
+
+      {/* How it Works / Clinic Section */}
+      <div
+        id="clinic"
+        className="container mx-auto px-4 py-8 bg-indigo-100 mt-5 rounded-md"
+      >
         <h1 className="font-bold text-2xl text-center mt-5">How it works?</h1>
         <div className="flex flex-wrap text-left mt-5 gap-4 justify-evenly">
-          <div className="bg-indigo-200 shadow-md rounded-lg p-6 block  w-80 h-35 ">
-            <h3 className="font-semibold mt-2  text-green-600">Step 1</h3>
+          <div className="bg-indigo-200 shadow-md rounded-lg p-6 w-80 h-35 ">
+            <h3 className="font-semibold mt-2 text-green-600">Step 1</h3>
             <h3 className="font-semibold mt-2">Choose a Clinic</h3>
             <p className="text-sm mt-1.5">
               Browse our network of verified dental clinics near you.
             </p>
           </div>
-          <div className="bg-indigo-200 shadow-md rounded-lg p-6 block items-center w-80 h-35">
-            <h3 className="font-semibold mt-2 text-green-600"> Step 2</h3>
+          <div className="bg-indigo-200 shadow-md rounded-lg p-6 w-80 h-35">
+            <h3 className="font-semibold mt-2 text-green-600">Step 2</h3>
             <h3 className="font-semibold mt-2">Book Appointment</h3>
             <p className="text-sm mt-1.5">
               Select a convenient date and time for your pre-travel checkup.
             </p>
           </div>
-          <div className="bg-indigo-200 shadow-md rounded-lg p-6 block items-center w-80 h-35">
-            <h3 className="font-semibold mt-2 text-green-600"> Step 3</h3>
+          <div className="bg-indigo-200 shadow-md rounded-lg p-6 w-80 h-35">
+            <h3 className="font-semibold mt-2 text-green-600">Step 3</h3>
             <h3 className="font-semibold mt-2">Get checked</h3>
             <p className="text-sm mt-1.5">
-              Visit the clinic a recieve your digital health certificate
+              Visit the clinic and receive your digital health certificate.
             </p>
           </div>
         </div>

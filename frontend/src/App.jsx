@@ -12,10 +12,14 @@ import AppointmentBookedList from "./clinic_page/Appointment_booked/List";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import RegisterPage from "./components/RegisterForm";
+import ClinicDetailsPage from "./pages/ClinicDetailsPage";
+import Navbar from "./components/Navbar";
+
 const App = () => {
   return (
     <Router>
       {/* <Navbar /> Navbar is always visible */}
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/clinics" element={<ClinicPage />} />
@@ -25,6 +29,7 @@ const App = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/clinic/:id" element={<ClinicDetailsPage />} />
 
         {/* Clinic dashboard nested routes */}
         <Route path="/clinic-dashboard" element={<ClinicLayout />}>

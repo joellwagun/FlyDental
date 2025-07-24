@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
-import { Search, MapPin, Star, Calendar } from 'lucide-react';
-import ClinicSection from '../components/ClinicSection';
-import Header from '../components/Header';
+import React, { useState } from "react";
+import { Search, MapPin, Star } from "lucide-react";
+import ClinicSection from "../components/ClinicSection";
+import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const ClinicPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
-  const [servicesFilter, setServicesFilter] = useState('');
-  const [ratingFilter, setRatingFilter] = useState('');
+  const navigate = useNavigate(); // <-- Add this line
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [servicesFilter, setServicesFilter] = useState("");
+  const [ratingFilter, setRatingFilter] = useState("");
+
+  // New state to hold applied filters
+  const [appliedFilters, setAppliedFilters] = useState({
+    searchTerm: "",
+    location: "",
+    services: "",
+    rating: "",
+  });
 
   const handleApplyFilters = () => {
-    console.log('Applying filters:', { searchTerm, locationFilter, servicesFilter, ratingFilter });
+    setAppliedFilters({
+      searchTerm,
+      location: locationFilter,
+      services: servicesFilter,
+      rating: ratingFilter,
+    });
   };
 
   const handleResetFilters = () => {
-    setSearchTerm('');
-    setLocationFilter('');
-    setServicesFilter('');
-    setRatingFilter('');
+    setSearchTerm("");
+    setLocationFilter("");
+    setServicesFilter("");
+    setRatingFilter("");
+    setAppliedFilters({
+      searchTerm: "",
+      location: "",
+      services: "",
+      rating: "",
+    });
   };
 
   return (
@@ -31,16 +53,18 @@ const ClinicPage = () => {
             Find Your Ideal Dental Clinic
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            Search and filter clinics to find the perfect match for your pre-travel dental needs
+            Search and filter clinics to find the perfect match for your
+            pre-travel dental needs
           </p>
-
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Search & Filters Section */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Search & Filters</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            Search & Filters
+          </h2>
 
           {/* Search Bar */}
           <div className="mb-6">
@@ -110,8 +134,8 @@ const ClinicPage = () => {
                   className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none bg-white"
                 >
                   <option value="">4+ stars, etc.</option>
-                  <option value="4+">4+ stars</option>
-                  <option value="4.5+">4.5+ stars</option>
+                  <option value="4">4+ stars</option>
+                  <option value="4.5">4.5+ stars</option>
                   <option value="5">5 stars</option>
                 </select>
                 <Star className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
@@ -137,20 +161,21 @@ const ClinicPage = () => {
         </div>
 
         {/* Available Clinics Section */}
-        <ClinicSection />
-
-        {/* Load More Button */}
-        <div className="text-center mt-8">
-          <button className="px-8 py-3 text-purple-600 border border-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium">
-            Load More Clinics
-          </button>
-        </div>
+        <ClinicSection
+          searchTerm={appliedFilters.searchTerm}
+          locationFilter={appliedFilters.location}
+          servicesFilter={appliedFilters.services}
+          ratingFilter={appliedFilters.rating}
+        />
 
         {/* Help Section */}
         <div className="text-center mt-12 py-8">
           <p className="text-gray-600">
-            Need help choosing?{' '}
-            <button className="text-purple-600 hover:text-purple-700 font-medium">
+            Need help choosing?{" "}
+            <button
+              onClick={() => navigate("/contact")}
+              className="text-purple-600 hover:text-purple-700 font-medium"
+            >
               Contact us!
             </button>
           </p>

@@ -1,6 +1,0 @@
-fastapi
-uvicorn[standard]
-sqlmodel
-bcrypt
-passlib[bcrypt]
-python-dotenv
